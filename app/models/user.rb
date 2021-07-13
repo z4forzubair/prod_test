@@ -4,4 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :shops, dependent: :destroy
+
+  enum user_role: [:customer, :shopper]
+  validates :user_role, presence: true
 end
