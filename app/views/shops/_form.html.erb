@@ -21,6 +21,15 @@
     <%= form.text_area :description %>
   </p>
 
+  <% if shop.categories.any? %>
+    <p>
+      <strong>Categories for this shop:</strong>
+      <% shop.categories.each do |cat| %>
+        <span><%= cat.service %> / </span>
+      <% end %>
+    </p>
+  <% end %>
+
   <p>
     <%= form.label :category %>
     <%= form.select(:category, select_categories, { prompt: "Please select below categories" },

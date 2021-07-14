@@ -48,9 +48,18 @@ class ShopsController < ApplicationController
 
   # PATCH/PUT /shops/1 or /shops/1.json
   def update
+    params = shop_params
     respond_to do |format|
-      if @shop.update(shop_params)
-        format.html { redirect_to @shop, notice: 'Shop was successfully updated.' }
+      if @shop.update(shop_name: params[:shop_name], description: params[:description])
+        shop_category = ShopCategory.new
+        shop_category.delete_old_categories(@shop)
+        flag = shop_category.save_categories(@shop, params[:category])
+        notice = if flag
+                   'Shop was successfully updated.'
+                 else
+                   'Shop was successfully updated, but services could not be added'
+                 end
+        format.html { redirect_to @shop, notice: notice }
         format.json { render :show, status: :ok, location: @shop }
       else
         format.html { render :edit, status: :unprocessable_entity }
