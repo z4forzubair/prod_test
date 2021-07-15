@@ -4,14 +4,17 @@
 
 class ShopsController < ApplicationController
   before_action :set_shop, only: %i[show edit update destroy]
+  before_action :set_current_user_shops, only: %i[index]
 
   # GET /shops or /shops.json
   def index
-    @shops = Shop.all
+    authorize @shops
   end
 
   # GET /shops/1 or /shops/1.json
-  def show; end
+  def show
+    authorize @shop
+  end
 
   # GET /shops/new
   def new
@@ -20,7 +23,9 @@ class ShopsController < ApplicationController
   end
 
   # GET /shops/1/edit
-  def edit; end
+  def edit
+    authorize @shop
+  end
 
   # POST /shops or /shops.json
   def create
@@ -48,6 +53,7 @@ class ShopsController < ApplicationController
 
   # PATCH/PUT /shops/1 or /shops/1.json
   def update
+    authorize @shop
     params = shop_params
     respond_to do |format|
       if @shop.update(shop_name: params[:shop_name], description: params[:description])
@@ -70,6 +76,7 @@ class ShopsController < ApplicationController
 
   # DELETE /shops/1 or /shops/1.json
   def destroy
+    authorize @shop
     @shop.destroy
     respond_to do |format|
       format.html { redirect_to shops_url, notice: 'Shop was successfully destroyed.' }
@@ -82,6 +89,10 @@ class ShopsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_shop
     @shop = Shop.find(params[:id])
+  end
+
+  def set_current_user_shops
+    @shops = Shop.where(user_id: current_user.id)
   end
 
   # Only allow a list of trusted parameters through.
