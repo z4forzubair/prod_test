@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   resources :shops
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    # sessions: 'users/sessions',
+    'registrations': 'users/registrations'
   }
   root to: 'shops#index'
 
