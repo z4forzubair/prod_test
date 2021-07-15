@@ -84,6 +84,16 @@ class ShopsController < ApplicationController
     end
   end
 
+  def show_shops
+    @shops = Shop.all
+    authorize @shops
+  end
+
+  def search
+    @shops = ShopCategory.new.search_shops(params[:query])
+    render 'show_shops'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

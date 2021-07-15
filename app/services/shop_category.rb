@@ -15,4 +15,16 @@ class ShopCategory
   def delete_old_categories(shop)
     shop.categories.map(&:destroy)
   end
+
+  def search_shops(query)
+    shops = Shop.where('shop_name LIKE :search', search: "%#{query}%")
+    shops = shops.to_a
+    services = Category.services.keys
+    services_list = []
+    services.each_with_index { |service, index| services_list << index unless (service =~ /#{query}/i).nil? }
+    categories = []
+    services_list.each { |service| categories.concat Category.where(service: service) }
+    categories.each { |cat| shops << cat.shop }
+    shops.uniq(&:id)
+  end
 end

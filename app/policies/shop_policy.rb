@@ -8,7 +8,7 @@ class ShopPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user_shopper?
   end
 
   def show?
@@ -33,5 +33,9 @@ class ShopPolicy < ApplicationPolicy
 
   def destroy?
     user_shopper? && check_user_shop?
+  end
+
+  def show_shops?
+    true
   end
 end
