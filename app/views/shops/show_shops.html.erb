@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Shops</h1>
+
+<%= form_with url: '/search', method: :get do |form| %>
+  <%= form.label :query, "Search for:" %>
+  <%= form.text_field :query %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<table>
+  <thead>
+  <tr>
+    <th>Shop Name</th>
+    <th>Description</th>
+    <th>
+      Categories List
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <% @shops.each do |shop| %>
+    <tr>
+      <td><%= shop.shop_name %></td>
+      <td><%= shop.description %></td>
+      <td>
+        <% if shop.categories.any? %>
+          <% shop.categories.each do |cat| %>
+            <span><%= cat.service %> / </span>
+          <% end %>
+        <% end %>
+      </td>
+      <td> <%= button_to 'Contact', send_email_path(shop) %> </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+<% if policy(@shops).index? %>
+  <%= link_to 'Shops index', shops_path %>
+<% end %>

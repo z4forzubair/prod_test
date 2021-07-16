@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Shops</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Shop Name</th>
+    <th>Description</th>
+    <th>
+      Categories List
+    </th>
+    <th colspan="3">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @shops.each do |shop| %>
+    <tr>
+      <td><%= shop.shop_name %></td>
+      <td><%= shop.description %></td>
+      <td>
+        <% if shop.categories.any? %>
+          <% shop.categories.each do |cat| %>
+            <span><%= cat.service %> / </span>
+          <% end %>
+        <% end %>
+      </td>
+      <td><%= link_to 'Show', shop %></td>
+      <td><%= link_to 'Edit', edit_shop_path(shop) %></td>
+      <td><%= link_to 'Destroy', shop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Shop', new_shop_path %>
