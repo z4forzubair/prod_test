@@ -3,7 +3,7 @@
 # require_dependency 'app/services/shop_saver.rb'
 
 class ShopsController < ApplicationController
-  before_action :set_shop, only: %i[show edit update destroy]
+  before_action :set_shop, only: %i[show edit update destroy send_email]
   before_action :set_current_user_shops, only: %i[index]
 
   # GET /shops or /shops.json
@@ -92,6 +92,10 @@ class ShopsController < ApplicationController
   def search
     @shops = ShopCategory.new.search_shops(params[:query])
     render 'show_shops'
+  end
+
+  def send_email
+    ShopMailer.with(shop: @shop).mail_shopper.deliver_later
   end
 
   private
